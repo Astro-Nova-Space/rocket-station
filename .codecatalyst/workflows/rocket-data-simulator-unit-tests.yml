@@ -1,0 +1,24 @@
+Name: rocket-data-simulator-unit-tests
+SchemaVersion: 1.0
+
+Triggers:
+  - Type: PUSH
+    Branches:
+      - main
+
+Actions:
+  UnitTests:
+    Identifier: aws/managed-test@v1
+    Inputs:
+      Sources:
+        - WorkflowSource
+    Outputs:
+      Reports:
+        TestReport:
+          Format: JUNITXML
+          IncludePaths:
+            - tests/unit/report.xml
+    Configuration:
+      Steps:
+        - Run: pip install -r requirements.txt
+        - Run: python -m unittest discover -s tests/unit -p "*_test.py" -o tests/unit/report.xml
